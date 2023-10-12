@@ -23,6 +23,8 @@ class FileStorage:
             with open(self.__file_path, 'r') as f:
                 serial_obj = json.load(f)
             for key, value in serial_obj.items():
-                self._objects[key] = classes[value["__class__"]](**value)
+                class_name = value["__class__"]
+                cls = getattr(models, class_name)
+                self.__objects[key] = cls(**value)
         except:
             pass
