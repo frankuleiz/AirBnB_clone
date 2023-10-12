@@ -12,7 +12,7 @@ class BaseModel:
         self.updated_at = datetime.now()
 
     def save(self):
-        self.updated_at = datetime.now
+        self.updated_at = datetime.now()
 
     def to_dict(self):
         new_dict = self.__dict__.copy()
