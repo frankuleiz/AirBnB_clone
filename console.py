@@ -4,11 +4,15 @@ This is a module for the console module
 Defines the class HBNBCommand
 """
 import cmd
+from models.base_model import BaseModel
+from models import storage
+import json
 
 
 class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
+    classes = {"BaseModel": BaseModel}
 
     def do_quit(self, arg):
         """Quit the program"""
@@ -29,6 +33,18 @@ class HBNBCommand(cmd.Cmd):
     def help_EOF(self):
         """Documentation for the EOF command"""
         print("Exit the program using EOF (Ctrl+D)")
+
+    def do_create(self, arg):
+        """creates a new instance of and save it as a JSON file"""
+        if not arg:
+            print("** class name missing **")
+            return
+        if arg in HBNBCommand.classes.keys():
+            instance = HBNBCommand.classes[arg]()
+            instance.save()
+            print(instance.id)
+        else:
+            print("** class doesn't exist **")
 
 
 if __name__ == '__main__':
