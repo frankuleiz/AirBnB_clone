@@ -13,7 +13,7 @@ from shlex import split
 class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
-    classes = {"BaseModel"}
+    classes = {"BaseModel": BaseModel}
 
     def do_quit(self, arg):
         """Quit the program"""
