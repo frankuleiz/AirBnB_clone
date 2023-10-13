@@ -2,7 +2,9 @@
 """this module is for FileStorage"""
 import json
 import models
+from models.base_model import BaseModel
 
+classes = {"BaseModel": BaseModel}
 
 class FileStorage:
     """class for serializing and desirializing objects to/from JSON"""
@@ -15,16 +17,17 @@ class FileStorage:
 
     def new(self, obj):
         """adds a new object to the dictionary of serialized objects"""
-        key = "{}.{}.format(obj.__class__.__name__, obj.id)"
-        FileStorage.__objects[key] = obj
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        self.__objects[key] = obj
 
     def save(self):
         """serializes objects and saves them to a JSON file"""
-        serial_obj = {
-                key: obj.to_dict()
-                for key, obj in FileStorage.__objects.items()
-                }
-        with open(FileStorage.__file_path, 'w') as f:
+        serial_obj = {}
+
+        for key in self.__objects:
+            serial_obj[key] = self.__objects[key].to_dict()
+
+        with open(self.__file_path, 'w') as f:
             json.dump(serial_obj, f)
 
     def reload(self):
@@ -32,10 +35,8 @@ class FileStorage:
         and loads them into the dictionary"""
         try:
             with open(self.__file_path, 'r') as f:
-                serial_obj = json.load(f)
-            for key, value in serial_obj.items():
-                class_name = value["__class__"]
-                cls = getattr(models, class_name)
-                self.__objects[key] = cls(**value)
+                jo = json.load(f)
+            for key in jo:
+                self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
         except FileNotFoundError:
             pass
