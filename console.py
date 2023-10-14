@@ -8,6 +8,7 @@ from models.base_model import BaseModel
 from models import storage
 import json
 from shlex import split
+from datetime import datetime
 
 
 class HBNBCommand(cmd.Cmd):
@@ -107,6 +108,36 @@ class HBNBCommand(cmd.Cmd):
                     if key.startswith(args[0] + ".")])
         else:
             print("** class doesn't exist **")
+
+    def do_update(self, arg):
+        """updates an instance based on the class name and id"""
+        args = split(arg)
+        if not args:
+            print("** class name missing **")
+            return
+        elif args[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        elif len(args) == 1:
+            print("** instance id missing **")
+            return
+        elif len(args) == 2:
+            print("** attribute name missing **")
+            return
+        elif len(args) == 3:
+            print("** value missing **")
+            return
+        else:
+            key = "{}.{}".format(args[0], args[1])
+            objects = storage.all()
+            if key not in objects:
+                print("** no instance fount **")
+                return
+            else:
+                instance = objects[key]
+                setattr(instance, args[2], args[3])
+                instance.updated_at = datetime.now()
+                storage.save()
 
 
 if __name__ == '__main__':
