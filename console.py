@@ -20,8 +20,15 @@ from models.review import Review
 class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
-    classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
+    classes = {
+            "Amenity": Amenity,
+            "BaseModel": BaseModel,
+            "City": City,
+           "Place": Place,
+           "Review": Review,
+           "State": State,
+           "User": User
+           }
 
     def do_quit(self, arg):
         """Quit the program"""
