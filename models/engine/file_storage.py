@@ -13,6 +13,7 @@ from models.user import User
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
 
+
 class FileStorage:
     """class for serializing and desirializing objects to/from JSON"""
     __file_path = "file.json"
