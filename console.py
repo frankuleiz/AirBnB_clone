@@ -113,13 +113,12 @@ class HBNBCommand(cmd.Cmd):
 
         args = split(arg)
         objects = storage.all()
-
         if not args:
-            print([str(objects) for object in objects.values()])
-
-        elif args[0] in HBNBCommand.classes.keys():
-            print([str(objects) for key, object in objects.items()
-                    if key.startswith(args[0] + ".")])
+            print([str(obj) for obj in objects.value()])
+        if args[0] in HBNBCommand.classes:
+            class_name = args[0]
+            class_instances = [str(obj) for key, obj in objcets.items() if key.startswith(class_name + ".")]
+            print(class_instances)
         else:
             print("** class doesn't exist **")
 
