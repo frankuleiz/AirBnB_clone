@@ -9,6 +9,7 @@ from models import storage
 import json
 from shlex import split
 from datetime import datetime
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
