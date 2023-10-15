@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """defines the Amenity user module"""
-from models.base_model import BaseModeli
+from models.base_model import BaseModel
 
 
 class Amenity(BaseModel):
