@@ -2,7 +2,6 @@
 """this module creates a class BaseModel"""
 
 import models
-#from models import storage
 import uuid
 from datetime import datetime
 
