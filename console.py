@@ -14,7 +14,7 @@ from datetime import datetime
 class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
-    classes = {"BaseModel": BaseModel}
+    classes = {"BaseModel": BaseModel, "User": User}
 
     def do_quit(self, arg):
         """Quit the program"""
