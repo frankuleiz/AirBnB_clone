@@ -24,11 +24,11 @@ class HBNBCommand(cmd.Cmd):
             "Amenity": Amenity,
             "BaseModel": BaseModel,
             "City": City,
-           "Place": Place,
-           "Review": Review,
-           "State": State,
-           "User": User
-           }
+            "Place": Place,
+            "Review": Review,
+            "State": State,
+            "User": User
+            }
 
     def do_quit(self, arg):
         """Quit the program"""
@@ -109,18 +109,20 @@ class HBNBCommand(cmd.Cmd):
         """
         Prints all string representation of all instances based or not on the
         class name
+        <classname>.all()
         """
 
         args = split(arg)
-        objects = storage.all()
-        if not args:
-            print([str(obj) for obj in objects.value()])
-        if args[0] in HBNBCommand.classes:
-            class_name = args[0]
-            class_instances = [str(obj) for key, obj in objcets.items() if key.startswith(class_name + ".")]
-            print(class_instances)
-        else:
+        if len(args) > 0 and args[1] not in HBNBCommand.classes:
             print("** class doesn't exist **")
+        else:
+            obj1 = []
+            for obj in storage.all().values():
+                if len(args) > 0 and args[0] == obj.__class__.__name__:
+                    obj1.append(obj.__str__())
+                elif len(args) == 0:
+                    obj1.append(obj.__str__())
+                print(obj1)
 
     def do_update(self, arg):
         """updates an instance based on the class name and id"""
@@ -151,6 +153,16 @@ class HBNBCommand(cmd.Cmd):
                 setattr(instance, args[2], args[3])
                 instance.updated_at = datetime.now()
                 storage.save()
+
+    def do_count(self, arg):
+        """ counts the number of instances of a class"""
+
+        args = split(arg)
+        count = 0
+        for obj in storage.all().values():
+            if args[0] == obj.__class__.__name__:
+                count += 1
+            print(count)
 
 
 if __name__ == '__main__':
