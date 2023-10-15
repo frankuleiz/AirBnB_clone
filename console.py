@@ -10,12 +10,18 @@ import json
 from shlex import split
 from datetime import datetime
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
-    classes = {"BaseModel": BaseModel, "User": User}
+    classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
     def do_quit(self, arg):
         """Quit the program"""
