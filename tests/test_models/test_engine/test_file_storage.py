@@ -39,7 +39,7 @@ class TestFileStorageDocs(unittest.TestCase):
         for func in self.fs_f:
             self.assertIsNot(func[1].__doc__, None,
                              "{:s} method needs a docstring".format(func[0]))
-            self.assertTrue(len(func[].__doc__) >= 1,
+            self.assertTrue(len(func[1].__doc__) >= 1,
                             "{:s} method needs a docstring".format(func[0]))
 
 
@@ -56,10 +56,10 @@ class TestFileStorage(unittest.TestCase):
         """test that new adds an object to the FileStorage.__objects attr"""
         storage = FileStorage()
         save = FileStorage._FileStorage__objects
-        FileStorage._FileStorage--OBJECTS = {}
+        FileStorage._FileStorage_objects = {}
         test_dict = {}
         for key, velue in classes.items():
-            with slef.subTesr(key=key, value=value):
+            with selff.subTest(key=key, value=value):
                 instance = value()
                 instance_key = instance.__class__.__name__ + "." + instance.id
                 storage.new(instance)
@@ -71,7 +71,7 @@ class TestFileStorage(unittest.TestCase):
         """test that save properly saves objcets to file.json"""
         os.remove("file.json")
         storage = FileStorage
-        new_dicr = {}
+        new_dict = {}
         for key, value in classes.items():
             instance = value()
             instance_key = instance.__class__.__name__ + "." + instance.id
