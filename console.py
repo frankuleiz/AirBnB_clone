@@ -30,6 +30,22 @@ class HBNBCommand(cmd.Cmd):
             "User": User
             }
 
+    def default(self, line):
+        """Handles custom commands like User.all(), User.count(), etc."""
+        parts = line.split('.')
+        if (
+                len(parts) == 2 and
+                parts[0] in HBNBCommand.classes and
+                parts[1] in ['all()', 'count()']
+                ):
+            class_name = parts[0]
+            if parts[1] == 'all()':
+                self.do_all(class_name)
+            elif parts[1] == 'count()':
+                self.do_count(class_name)
+        else:
+            print("*** Unknown syntax: {}".format(line))
+
     def do_quit(self, arg):
         """Quit the program"""
         return True
@@ -113,16 +129,17 @@ class HBNBCommand(cmd.Cmd):
         """
 
         args = split(arg)
-        obj1 = []
-        if len(args) > 0 and args[1] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
+        class_name = args[0]
+        if class_name in HBNBCommand.classes:
+            instances = storage.all()
+            filtered_instances = [
+                    str(instances)
+                    for key, instance in instances.items()
+                    if key.split('.')[0] == class_name
+                    ]
+            print(filtered_instances)
         else:
-            for obj in storage.all().values():
-                if len(args) > 0 and args[0] == obj.__class__.__name__:
-                    obj1.append(obj.__str__())
-                elif len(args) == 0:
-                    obj1.append(obj.__str__())
-            print(obj1)
+            print("** class doesn't exist **")
 
     def do_update(self, arg):
         """updates an instance based on the class name and id"""
@@ -156,13 +173,15 @@ class HBNBCommand(cmd.Cmd):
 
     def do_count(self, arg):
         """ counts the number of instances of a class"""
-
         args = split(arg)
-        count = 0
-        for obj in storage.all().values():
-            if obj.__class__.__name__ == class_name:
-                count += 1
-        print(count)
+        class_name = args[0]
+        if class_name in HBNBCommand.classes:
+            count = sum(
+                    1
+                    for key in storage.all()
+                    if key.split('.')[0] == class_name
+                    )
+            print(count)
 
 
 if __name__ == '__main__':
