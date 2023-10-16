@@ -82,7 +82,7 @@ class HBNBCommand(cmd.Cmd):
         """prints the string representation of an instance"""
         args = split(arg)
         if not args:
-            print("** class name mising ***")
+            print("** class name missing ***")
             return
         if args[0] in HBNBCommand.classes:
             if len(args) < 2:
@@ -129,17 +129,21 @@ class HBNBCommand(cmd.Cmd):
         """
 
         args = split(arg)
-        class_name = args[0]
-        if class_name in HBNBCommand.classes:
+        if not args:
             instances = storage.all()
-            filtered_instances = [
-                    str(instances)
-                    for key, instance in instances.items()
-                    if key.split('.')[0] == class_name
-                    ]
-            print(filtered_instances)
+            print([str(instance) for instance in instances.values()])
         else:
-            print("** class doesn't exist **")
+            class_name = args[0]
+            if class_name in HBNBCommand.classes:
+                instances = storage.all()
+                filtered_instances = [
+                        str(instances)
+                        for key, instance in instances.items()
+                        if key.split('.')[0] == class_name
+                        ]
+                print(filtered_instances)
+            else:
+                print("** class doesn't exist **")
 
     def do_update(self, arg):
         """updates an instance based on the class name and id"""
@@ -163,7 +167,7 @@ class HBNBCommand(cmd.Cmd):
             key = "{}.{}".format(args[0], args[1])
             objects = storage.all()
             if key not in objects:
-                print("** no instance fount **")
+                print("** no instance found **")
                 return
             else:
                 instance = objects[key]
