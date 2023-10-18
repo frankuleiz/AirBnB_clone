@@ -33,7 +33,15 @@ class HBNBCommand(cmd.Cmd):
     def default(self, line):
         """Handles custom commands like User.all(), User.count(), etc."""
         parts = line.split('.')
-        if (
+        if len(parts) == 2 and parts[0].strip() == 'User' and 'show(' in parts[1] and parts[1].endswith(')'):
+            parts = parts[1].split('"')
+            if len(parts) == 3:
+                class_name = 'User'
+                instance_id = parts[1]
+                self.do_show("{} {}".format(class_name, instance_id))
+            else:
+                print("*** Unknown syntax: {}".format(class_name, instance_id))
+        elif (
                 len(parts) == 2 and
                 parts[0] in HBNBCommand.classes and
                 parts[1] in ['all()', 'count()']
@@ -84,16 +92,19 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing ***")
             return
-        if args[0] in HBNBCommand.classes:
-            if len(args) < 2:
-                print("** instance id missing **")
-                return
-            else:
-                key = "{}.{}".format(args[0], args[1])
-                objects = storage.all()
-                print(objects.get(key, "** no instance found **"))
+        if args[0] not in HBNBCommand.classes:
+            print("** clas doesn't exist **")
+            return
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+        key = "{}.{}".format(args[0], args[1])
+        objects = storage.all()
+        instance = objects.get(key)
+        if instance:
+            print(instance)
         else:
-            print("** class doesn't exist **")
+            print(objects.get(key, "** no instance found **"))
 
     def do_destroy(self, arg):
         """
